@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="status">
+        <div class="status-cont">
+          <p class="online">0</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <h1 class="nav-logo">ChatNow</h1>
+      </nav>
+    </div>
+
+    <main>
+      <h1 class="notice none"></h1>
+      <div class="container">
+        
+      </div>
+      <div class="send">
+        <form>
+          <input
+            class="form-input"
+            type="text"
+            placeholder="Enter the message"
+          />
+          <button class="btn" type="submit">Send</button>
+        </form>
+      </div>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>
