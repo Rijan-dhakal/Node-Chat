@@ -6,43 +6,53 @@ const online = document.querySelector(".online");
 
 const socket = io();
 
+// receiving messages
 socket.on("message", (data) => {
   showMsg(data);
 });
 
-socket.on("info", (data) => {
+// information of notice
+socket.on("info", ({ reason, userId }) => {
   const displayMsg =
-    data.reason === "connected"
-      ? `User connected: ${data.userId}`
-      : `User disconnected: ${data.userId}`;
-  const putClass = data.reason === "connected" ? "cgreen" : "cred";
+    reason === "connected"
+      ? `User connected: ${userId}`
+      : `User disconnected: ${userId}`;
+  const putClass = reason === "connected" ? "chat-green" : "chat-red";
   showNotice(displayMsg, putClass);
 });
 
+// getting active status
 socket.on("status", (status) => {
   online.textContent = status;
 });
 
+// event listener for button
 btn.addEventListener("click", (e) => {
   e.preventDefault();
   socket.emit("chat-msg", input.value);
   input.value = "";
 });
 
+// helper function to show received message
 const showMsg = function (data) {
-  const el = `<div class="message-container ${ data?.senderId === socket.id ? "own" : "" }">
-              <p class="message">${data.msg}</p>
-                </div>`;
-  container.insertAdjacentHTML("beforeend", el);
+  const el = document.createElement("div");
+  el.className = "message-container";
+  if (data?.senderId === socket.id) el.classList.add("own");
+
+  const p = document.createElement("p");
+  p.className = "message";
+  p.textContent = data.msg;
+
+  el.appendChild(p);
+  container.appendChild(el);
 };
 
+// helper function to show notice
 const showNotice = function (msg, putClass) {
-  notice.classList.remove("none");
-  notice.classList.add(putClass);
+  notice.classList = `notice ${putClass}`;
   notice.textContent = msg;
   setTimeout(() => {
-    notice.classList.add("none");
-    notice.classList.remove(putClass);
+    notice.classList = `notice none`;
     notice.textContent = "";
   }, 4000);
 };
