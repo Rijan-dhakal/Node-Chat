@@ -80,6 +80,17 @@ main {
   word-wrap: break-word;
 }
 
+.message-sender {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #e1e1e1;
+}
+
+.own .message-sender {
+  color: #004d00;
+}
+
 .send form {
   display: flex;
   width: 100%;
@@ -116,7 +127,7 @@ main {
 }
 
 .none {
-  display: none;
+  display: none !important;
 }
 
 .online {
@@ -146,4 +157,56 @@ main {
 
 .chat-green {
   color: rgb(15, 246, 15);
+}
+
+.form {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.username-form {
+  background-color: #333;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.username-form h2 {
+  margin-bottom: 20px;
+  color: #f1f1f1;
+}
+
+.username-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
+.username-btn {
+  padding: 12px 24px;
+  background-color: #38f842;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.username-btn:hover {
+  background-color: #3ae442;
 }

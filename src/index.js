@@ -16,25 +16,43 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 const onlineUsers = [];
+const usernames = {};
 
 io.on("connection", (socket) => {
   // socket refers to client
-  io.emit("info", {reason: "connected", userId:socket.id});
-  onlineUsers.push(socket.id);
 
-  io.emit("status", onlineUsers.length);
+  socket.on("disconnect", () => {
+    io.emit("info", {
+      reason: "disconnected",
+      username: usernames[socket.id] || socket.id,
+    });
+    const index = onlineUsers.indexOf(socket.id);
+    delete usernames[socket.id];
 
-  socket.on("disconnect", ()=>{
-    io.emit("info", {reason:"disconnected", userId:socket.id})
-    const index = onlineUsers.indexOf(socket.id)
-    if(index !== -1){
-       onlineUsers.splice(index, 1);
-       io.emit("status", onlineUsers.length)
+    if (index !== -1) {
+      onlineUsers.splice(index, 1);
+      io.emit("status", onlineUsers.length);
     }
-  })
+  });
+
+  socket.on("username", ({ username }) => {
+    usernames[socket.id] = username;
+    onlineUsers.push(socket.id);
+
+    io.emit("info", {
+      reason: "connected",
+      username: usernames[socket.id] || socket.id,
+    });
+
+    io.emit("status", onlineUsers.length);
+  });
 
   socket.on("chat-msg", (msg) => {
-    io.emit("message", { msg: msg, senderId: socket.id });
+    io.emit("message", {
+      msg: msg,
+      senderId: socket.id,
+      username: usernames[socket.id],
+    });
   });
 });
 
