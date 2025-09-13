@@ -83,12 +83,18 @@ main {
 .message-sender {
   font-size: 14px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   color: #e1e1e1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .own .message-sender {
   color: #004d00;
+}
+
+.message-sender .time {
+  padding-right: 20px;
 }
 
 .send form {

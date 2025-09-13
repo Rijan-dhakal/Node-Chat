@@ -40,17 +40,24 @@ const showMsg = function (data) {
   if (data?.senderId === socket.id) el.classList.add("own");
 
   // Add username display
-  const usernameDiv = document.createElement("div");
-  usernameDiv.className = "message-sender";
-  usernameDiv.textContent =
+  const usernameContDiv = document.createElement("div");
+  usernameContDiv.className = "message-sender";
+
+  const pUser = document.createElement("p");
+  pUser.textContent =
     data.senderId === socket.id ? "You" : data.username || "Anonymous";
 
-  const p = document.createElement("p");
-  p.className = "message";
-  p.textContent = data.msg;
+  const time = returnTime();
 
-  el.appendChild(usernameDiv);
-  el.appendChild(p);
+  const msg = document.createElement("p");
+  msg.className = "message";
+  msg.textContent = data.msg;
+
+  el.appendChild(usernameContDiv);
+  usernameContDiv.appendChild(pUser);
+  usernameContDiv.appendChild(time);
+
+  el.appendChild(msg);
   container.appendChild(el);
 
   // Auto-scroll to the latest message
@@ -65,6 +72,25 @@ const showNotice = function (msg, putClass) {
     notice.classList = `notice none`;
     notice.textContent = "";
   }, 5000);
+};
+
+// helper function to display time
+const returnTime = function () {
+  const now = new Date();
+  const hour = String(now.getHours());
+  const minutes = String(now.getMinutes());
+
+  const formattedHour = String(hour > 12 ? Math.trunc(hour % 12) : hour);
+
+  const p = document.createElement("p");
+  p.classList.add("time");
+
+  p.textContent = `${formattedHour.padStart(2, "0")}:${minutes.padStart(
+    2,
+    "0"
+  )}`;
+
+  return p;
 };
 
 // event listener for send button
